@@ -90,12 +90,12 @@ CREATE ROLE repuser WITH LOGIN SUPERUSER PASSWORD 'secret_password';
 
   - Restart PostgreSQL 9.6 to apply changes.
 
-2. Prepare New PostgreSQL 17 Server
+### 2. Prepare New PostgreSQL 17 Server
   - Install PostgreSQL 17 + pglogical plugin.
   - Create a database named acme_db (or your DB name).
   - Confirm you can connect with psql.
 
-3. Schema-Only Dump & Restore
+### 3. Schema-Only Dump & Restore
   - Dump the schema (no data) from old server:
     ```bash
     pg_dump -h 10.10.10.50 -U repuser -s -d acme_db > schema_only.sql
@@ -105,7 +105,7 @@ CREATE ROLE repuser WITH LOGIN SUPERUSER PASSWORD 'secret_password';
     psql -h 10.10.10.60 -U repuser -d acme_db -f schema_only.sql
     ```
 
-4. Pre-Copy Large Tables
+### 4. Pre-Copy Large Tables
    For any tables in the tens-of-GB range, do a data-only dump and restore, e.g.:
    ```bash
    # Dump table "orders" on old server
@@ -116,7 +116,7 @@ CREATE ROLE repuser WITH LOGIN SUPERUSER PASSWORD 'secret_password';
    ```
   If you have foreign key dependencies, load parent tables first. Once these large tables are present on the new server, you can skip the initial bulk copy in pglogical (see below).
 
-5. Configure pglogical (Provider Side)
+### 5. Configure pglogical (Provider Side)
    On old server (Postgres 9.6), in DB acme_db:
 
    ```bash
@@ -148,7 +148,7 @@ SELECT pglogical.replication_set_add_table(
 );
 ...
 ```
-6. Configure pglogical (Subscriber Side)
+### 6. Configure pglogical (Subscriber Side)
   On the new server (Postgres 17):
   ```bash
   CREATE EXTENSION pglogical;
@@ -159,7 +159,7 @@ SELECT pglogical.create_node(
 );
 ```
 
-7. Create the Subscription
+### 7. Create the Subscription
   ```bash
   SELECT pglogical.create_subscription(
   subscription_name := 'acme_subscription',
@@ -171,7 +171,7 @@ SELECT pglogical.create_node(
   - Smaller tables are fully copied.
   - Large, pre-copied tables just replicate changes (no big initial transfer).
 
-8. Monitor & Final Cutover
+### 8. Monitor & Final Cutover
   - Check status:
     ```bash
     SELECT * FROM pglogical.show_subscription_status();
@@ -184,15 +184,4 @@ SELECT pglogical.create_node(
       2. Wait a few seconds for last WAL to apply.
       3. Point your application to the new server (10.10.10.60).
       4. Done! You’re on PostgreSQL 17 now.
-
-
-
-
-
-
-   
-
-
-
-
 
