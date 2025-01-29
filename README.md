@@ -19,7 +19,6 @@ This repository contains a **step-by-step** guide and **scripts** for migrating 
   - [7. Create the Subscription](#7-create-the-subscription)
   - [8. Monitor & Final Cutover](#8-monitor--final-cutover)
 - [Challenges & Lessons Learned](#challenges--lessons-learned)
-- [References](#references)
 
 ---
 
@@ -185,3 +184,12 @@ SELECT pglogical.create_node(
       3. Point your application to the new server (10.10.10.60).
       4. Done! You’re on PostgreSQL 17 now.
 
+---
+
+## Challenges & Lessons Learned
+
+1. Foreign Key Failures: Ensure parent tables are loaded first or disable constraints temporarily.
+2. “Relation Already Exists”: Use --data-only if the schema is already present on the new server.
+3. Large Table Performance: Consider pg_dump -F d -j 4 (directory + parallel) to speed up huge table loads.
+4. WAL Retention: Old server must keep WAL long enough for the entire sync (possibly hours).
+5. Subscription Goes Down: Usually means a mismatch or error (FK constraints, missing table, etc.). Fix cause, then re-enable.
