@@ -37,10 +37,10 @@ This repository contains a **step-by-step** guide and **scripts** for migrating 
 
 ## Prerequisites
 
-1- PostgreSQL 9.6 (old server).
-2- PostgreSQL 17 (new server).
-3- pglogical installed on both (build from source if needed for 9.6).
-4- Enough wal_keep_size or WAL archiving on the old server to sustain a multi-hour initial copy.
+  1. PostgreSQL 9.6 (old server).
+  2. PostgreSQL 17 (new server).
+  3. pglogical installed on both (build from source if needed for 9.6).
+  4. Enough wal_keep_size or WAL archiving on the old server to sustain a multi-hour initial copy.
 
 ---
 
