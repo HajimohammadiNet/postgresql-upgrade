@@ -68,7 +68,7 @@ my-postgres-migration/
 
 ## Migration Steps
 
-1. Prepare Old PostgreSQL 9.6 Server
+### 1. Prepare Old PostgreSQL 9.6 Server
   - Install pglogical (via source or PGDG repo if available).
   - In postgresql.conf, set:
   ```bash
