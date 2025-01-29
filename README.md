@@ -7,7 +7,6 @@ This repository contains a **step-by-step** guide and **scripts** for migrating 
 ## Table of Contents
 
 - [Overview](#overview)
-- [Repository Structure](#repository-structure)
 - [Prerequisites](#prerequisites)
 - [Migration Steps](#migration-steps)
   - [1. Prepare Old PostgreSQL 9.6 Server](#1-prepare-old-postgresql-96-server)
@@ -33,26 +32,6 @@ This repository contains a **step-by-step** guide and **scripts** for migrating 
 - **Logical Replication** (pglogical): Allows different major versions of Postgres to replicate data in real-time.  
 - **Pre-Copy**: For very large tables, we manually dump/restore them to avoid re-copying on every failure.  
 - **Minimal Downtime**: Most of the data transfer happens while the old DB is still live; we only take a brief downtime window at the end.
-
----
-
-## Repository Structure
-
-```bash
-my-postgres-migration/
-├── README.md                  # You are here!
-├── docs/
-│   └── migration_guide.md     # More detailed or step-by-step docs
-├── scripts/
-│   ├── 01_create_schema_dump.sh      # Example shell script to dump schema
-│   ├── 02_restore_schema.sh          # Example shell script to restore schema
-│   ├── 03_pre_copy_large_tables.sh   # Example shell script for large table dumps
-│   ├── 04_pglogical_setup_provider.sql
-│   ├── 05_pglogical_setup_subscriber.sql
-│   ├── 06_create_subscription.sql
-│   └── ...
-└── LICENSE
-```
 
 ---
 
